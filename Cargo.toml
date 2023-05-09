@@ -1,0 +1,16 @@
+[features]
+strict = []
+
+[package]
+name = "mpi-minfail"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+mpi = { version = "0.6.*" }
+mpi-sys = { version = "0.2" }
+
+[lib]
+name = "mpi_minfail"
