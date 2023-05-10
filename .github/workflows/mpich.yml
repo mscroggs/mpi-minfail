@@ -1,0 +1,33 @@
+name: 🧪 Test
+
+on:
+  push:
+    branches:
+      - "**"
+
+jobs:
+  run-tests:
+    name: Run tests (Rust)
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rust-version: ["stable"]
+        mpi: ["mpich"]
+    steps:
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust-version }}
+          components: rustfmt
+      - name: Install LAPACK & OpenBLAS
+        run: sudo apt-get install -y libopenblas-dev liblapack-dev libclang-dev
+      - name: Set up MPI
+        uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: ${{ matrix.mpi }}
+      - name: Install cargo-mpirun
+        run: cargo install cargo-mpirun
+
+      - uses: actions/checkout@v3
+
+      - run: cargo build
