@@ -1,5 +1,5 @@
 [features]
-strict = []
+new = []
 
 [package]
 name = "mpi-minfail"

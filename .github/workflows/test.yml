@@ -1,4 +1,4 @@
-name: 🧪 Test with openmpi
+name: 🧪
 
 on:
   push:
@@ -7,18 +7,20 @@ on:
 
 jobs:
   run-tests:
-    name: Run tests (Rust)
+    name: Run test
     runs-on: ubuntu-latest
     strategy:
       matrix:
         rust-version: ["stable"]
-        mpi: ["openmpi"]
+        mpi: ["openmpi", "mpich"]
+        rsmpi: ["mscroggs", "rsmpi"]
     steps:
       - name: Set up Rust
         uses: actions-rs/toolchain@v1
         with:
           toolchain: ${{ matrix.rust-version }}
           components: rustfmt
+      - run: sudo apt-get update
       - name: Install LAPACK & OpenBLAS
         run: sudo apt-get install -y libopenblas-dev liblapack-dev libclang-dev
       - name: Set up MPI
@@ -31,5 +33,15 @@ jobs:
           git clone https://github.com/mscroggs/rsmpi.git
           cd rsmpi
           git checkout mscroggs/MPI_UNWEIGHTED
+        if: matrix.rsmpi == 'mscroggs'
+      - run: git clone https://github.com/rsmpi/rsmpi.git
+        if: matrix.rsmpi == 'rsmpi'
 
-      - run: cargo build
+      - run: |
+          cargo build --features new
+          cargo mpirun --example test -n 2 --features "new"
+        if: matrix.rsmpi == 'mscroggs'
+      - run: |
+          cargo build --features new
+          cargo mpirun --example test -n 2 --features "new"
+        if: matrix.rsmpi == 'rsmpi'
