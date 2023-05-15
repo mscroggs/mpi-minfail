@@ -8,6 +8,10 @@ fn main() {
     let universe: Universe = mpi::initialize().unwrap();
     let comm = universe.world();
 
+    if comm.size() != 2 {
+        panic!("This example must be run on exactly two processes.");
+    }
+
     let neighbors = vec![if comm.rank() == 0 { 1 } else { 0 }];
 
     let neighbor_comm = unsafe {
