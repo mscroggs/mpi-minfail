@@ -41,6 +41,10 @@ jobs:
         run: git clone https://github.com/rsmpi/rsmpi.git
         if: matrix.rsmpi == 'rsmpi'
 
+      - name: Delay to allow passing workflows to finish
+        run: sleep 120
+        if ${{ matrix.mpi == 'openmpi' && matrix.rsmpi == 'rsmpi' }}
+
       - name: Build
         run: cargo build --features new
         if: matrix.rsmpi == 'mscroggs'
