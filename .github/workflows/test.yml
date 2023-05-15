@@ -28,7 +28,7 @@ jobs:
           mpi: ${{ matrix.mpi }}
 
       - name: Install mpirun
-        run: cargo install mpirun
+        run: cargo install cargo-mpirun
 
       - uses: actions/checkout@v3
       - name: Pull rsmpi
