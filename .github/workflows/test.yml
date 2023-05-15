@@ -27,22 +27,29 @@ jobs:
         with:
           mpi: ${{ matrix.mpi }}
 
-      - run: cargo install mpirun
+      - name: Install mpirun
+        run: cargo install mpirun
 
       - uses: actions/checkout@v3
-      - run: |
+      - name: Pull rsmpi
+        run: |
           git clone https://github.com/mscroggs/rsmpi.git
           cd rsmpi
           git checkout mscroggs/MPI_UNWEIGHTED
         if: matrix.rsmpi == 'mscroggs'
-      - run: git clone https://github.com/rsmpi/rsmpi.git
+      - name: Pull rsmpi
+        run: git clone https://github.com/rsmpi/rsmpi.git
         if: matrix.rsmpi == 'rsmpi'
 
-      - run: |
-          cargo build --features new
-          cargo mpirun --example test -n 2 --features "new"
+      - name: Build
+        run: cargo build --features new
         if: matrix.rsmpi == 'mscroggs'
-      - run: |
-          cargo build --features new
-          cargo mpirun --example test -n 2 --features "new"
+      - name: Build
+        run: cargo build
+        if: matrix.rsmpi == 'rsmpi'
+      - name: Run example
+        run: cargo mpirun --example test -n 2 --features "new"
+        if: matrix.rsmpi == 'mscroggs'
+      - name: Run example
+        run: cargo mpirun --example test -n 2
         if: matrix.rsmpi == 'rsmpi'
