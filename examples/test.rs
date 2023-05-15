@@ -45,8 +45,8 @@ fn main() {
         );
     }
     if comm.rank() == 0 {
-        assert_eq!(send_me[0], 5);
+        assert_eq!(result[0], 5);
     } else {
-        assert_eq!(send_me[0], 3);
+        assert_eq!(result[0], 3);
     }
 }
