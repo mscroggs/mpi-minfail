@@ -11,15 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        rust-version: ["stable"]
         mpi: ["openmpi", "mpich"]
         rsmpi: ["mscroggs", "rsmpi"]
     steps:
       - name: Set up Rust
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: ${{ matrix.rust-version }}
-          components: rustfmt
+          toolchain: stable
       - name: Install LAPACK & OpenBLAS
         run: sudo apt-get install -y libopenblas-dev liblapack-dev libclang-dev
       - name: Set up MPI
