@@ -27,6 +27,8 @@ jobs:
         with:
           mpi: ${{ matrix.mpi }}
 
+      - run: cargo install mpirun
+
       - uses: actions/checkout@v3
       - run: |
           git clone https://github.com/mscroggs/rsmpi.git
