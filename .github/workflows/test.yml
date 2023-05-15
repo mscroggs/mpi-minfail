@@ -43,7 +43,7 @@ jobs:
 
       - name: Delay to allow passing workflows to finish
         run: sleep 120
-        if ${{ matrix.mpi == 'openmpi' && matrix.rsmpi == 'rsmpi' }}
+        if: ${{ matrix.mpi == 'openmpi' && matrix.rsmpi == 'rsmpi' }}
 
       - name: Build
         run: cargo build --features new
